@@ -8,7 +8,7 @@ def get_forms(url):
     soup = BeautifulSoup(response.content, 'html.parser')
     return soup.find_all('form')
 
-# Function to extract form details (action, method, input fields)
+
 def get_form_details(form):
     details = {}
     try:
@@ -26,7 +26,7 @@ def get_form_details(form):
     details['inputs'] = inputs
     return details
 
-# Function to submit a form
+
 def submit_form(form_details, url, payload):
     target_url = urllib.parse.urljoin(url, form_details['action'])
     inputs = form_details['inputs']
@@ -35,7 +35,7 @@ def submit_form(form_details, url, payload):
         if input['type'] == 'text' or input['type'] == 'search':
             data[input['name']] = payload
         else:
-            data[input['name']] = 'test'  # default value for other inputs
+            data[input['name']] = 'test' 
     if form_details['method'] == 'post':
         return requests.post(target_url, data=data)
     else:
@@ -43,20 +43,19 @@ def submit_form(form_details, url, payload):
     
 import subprocess
 
-# Function to verify XSS vulnerabilities using xsstrike.py
+
 def verify_xss_with_xsstrike(target_url):
     try:
         # Build the xsstrike command with the target URL
         xsstrike_command = ['python', 'XSStrike/xsstrike.py', '-u', target_url]
 
         # Execute the xsstrike command
-        print(f"Running XSStrike against {target_url}...")
+        print(f"Running XSStrike against {target_url}......")
         result = subprocess.run(xsstrike_command, capture_output=True, text=True)
 
-        # Display the result of the xsstrike tool
+        
         print(result.stdout)
-
-        # Check for XSS findings in the result
+ 
         if "XSS found" in result.stdout or "Injection found" in result.stdout:
             print(f"[!!!] XSS vulnerability found in {target_url}.")
         else:
@@ -67,8 +66,6 @@ def verify_xss_with_xsstrike(target_url):
 
 
 
-
-# Function to scan a URL for XSS vulnerabilities
 def scan_xss(url):
     forms = get_forms(url)
     print(f"[+] Detected {len(forms)} forms on {url}.")
@@ -91,9 +88,9 @@ if __name__ == "__main__":
     target_url = input("Enter URL to scan for XSS: ")
     print(f"Scanning {target_url} for XSS vulnerabilities...")
     is_vulnerable = scan_xss(target_url)
-    print(f'Confirming XSS Vulnerabilites')
+    print(f'Confirming XSS Vulnerabilites......')
     verify_xss_with_xsstrike(target_url)
 
     if not is_vulnerable:
-        print("No XSS vulnerabilities detected.")
+        print("No XSS..... vulnerabilities detected.")
 
